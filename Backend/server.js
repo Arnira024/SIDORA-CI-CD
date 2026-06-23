@@ -42,12 +42,13 @@ app.use(cors());
 app.use(express.json());
 
 // ✅ CONNECT MONGODB
-mongoose.connect("mongodb://hijranur097_db_user:donor123@ac-bwsrore-shard-00-00.t3t7nps.mongodb.net:27017,ac-bwsrore-shard-00-01.t3t7nps.mongodb.net:27017,ac-bwsrore-shard-00-02.t3t7nps.mongodb.net:27017/donorDB?ssl=true&replicaSet=atlas-11uuhg-shard-0&authSource=admin&retryWrites=true&w=majority")
-  .then(() => {
-  console.log("✅ MongoDB CONNECTED");
-})
-  .catch(err => console.log("❌ ERROR:", err.message));
-
+if (process.env.NODE_ENV !== "test") {
+  mongoose.connect("mongodb://...")
+    .then(() => {
+      console.log("✅ MongoDB CONNECTED");
+    })
+    .catch(err => console.log("❌ ERROR:", err.message));
+}
 /* =========================
    SCHEMA DONOR (TIDAK DIUBAH)
 ========================= */
@@ -119,7 +120,9 @@ const testInsert = async () => {
 
   }
 };
-testInsert();
+if (process.env.NODE_ENV !== "test") {
+  testInsert();
+}
 
 /* =========================
    ROOT
